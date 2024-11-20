@@ -9,9 +9,11 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @Entity
+@ToString
 @Table(name = "tb_category", indexes = @Index(name = "idx_category_code", columnList = "code"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
