@@ -61,4 +61,14 @@ class CategoryCommandServiceTest {
             System.out.println(category);
         }
     }
+
+    @Test
+    @Transactional
+    void deleteCategoryByCode() {
+        categoryCommandService.createCategory("신발", "102");
+        categoryCommandService.createCategory("신발>컨버스", "102>100");
+        categoryCommandService.createCategory("신발>슬리퍼", "102>101");
+
+        categoryCommandService.deleteCategoryByCode("102");
+    }
 }
