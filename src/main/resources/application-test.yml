@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: even-category
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=POSTGRESQL;
+    username: sa
+    password:
+  data:
+    redis:
+      host: localhost
+      port: 63798
+      username: default
+      password:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+  #        show_sql: true # sql 로깅
+  #        #        format_sql: true # SQL 문 정렬하여 출력
+  #        highlight_sql: true # SQL 문 색 부여
+  #        use_sql_comments: true # 콘솔에 표시되는 쿼리문 위에 어떤 실행을 하려는지 HINT 표시
+  docker:
+    compose:
+      lifecycle-management: start_only # start_only, start_and_stop 옵션이 있으며, 스프링 종료 시 컨테이너 종료 여부를 결정할 수 있음
+      start:
+        command: up
+      stop:
+        command: down
+        timeout: 1m
+  sql:
+    init:
+      platform: h2
+      data-locations: classpath:data-test.sql
+      schema-locations: classpath:schema.sql
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+      multiline: true
