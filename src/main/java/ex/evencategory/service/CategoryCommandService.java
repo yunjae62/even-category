@@ -53,4 +53,12 @@ public class CategoryCommandService {
 
         return categoryRepository.saveAll(categoryList);
     }
+
+    /**
+     * 카테고리 삭제
+     */
+    public void deleteCategoryByCode(String code) {
+        List<Category> categoryList = categoryRepository.findAllSubByCodeLike(code);
+        categoryRepository.deleteAll(categoryList);
+    }
 }
