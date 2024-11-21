@@ -13,7 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 @Slf4j(topic = "category-service")
 @Service
 @RequiredArgsConstructor
-public class CategoryService {
+public class CategoryQueryService {
 
     private final CategoryRepository categoryRepository;
 
