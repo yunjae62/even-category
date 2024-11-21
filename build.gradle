@@ -45,6 +45,9 @@ dependencies {
     // p6spy starter
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.10.0'
 
+    // h2 database
+    runtimeOnly 'com.h2database:h2'
+
     /* Test*/
 
     // Spring
