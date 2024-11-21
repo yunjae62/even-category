@@ -36,7 +36,7 @@ spring:
     init:
       platform: h2
       data-locations: classpath:data-test.sql
-      schema-locations: classpath:schema.sql
+      schema-locations: classpath:schema-test.sql
 
 decorator:
   datasource:
