@@ -37,11 +37,11 @@ public class Category {
     }
 
     public void updateName(String beforeName, String afterName) {
-        this.name = this.name.replace(beforeName, afterName);
+        this.name = this.name.replaceFirst(beforeName, afterName);
     }
 
     public void updateCode(String beforeCode, String afterCode) {
-        this.code = this.code.replace(beforeCode, afterCode);
+        this.code = this.code.replaceFirst(beforeCode, afterCode);
     }
 
     public void updateByCode(String beforeCode, String afterCode, String afterName) {
