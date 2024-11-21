@@ -18,6 +18,8 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
 
+    public static final String CATEGORY_DELIMITER = ">";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,5 +34,31 @@ public class Category {
         category.code = code;
 
         return category;
+    }
+
+    public void updateName(String beforeName, String afterName) {
+        this.name = this.name.replace(beforeName, afterName);
+    }
+
+    public void updateCode(String beforeCode, String afterCode) {
+        this.code = this.code.replace(beforeCode, afterCode);
+    }
+
+    public void updateByCode(String beforeCode, String afterCode, String afterName) {
+        updateCode(beforeCode, afterCode);
+        this.name = createAfterName(beforeCode, afterName);
+    }
+
+    private String createAfterName(String beforeCode, String afterName) {
+        StringBuilder sb = new StringBuilder(afterName);
+
+        int noChangeIndex = beforeCode.split(CATEGORY_DELIMITER).length;
+        String[] names = this.name.split(CATEGORY_DELIMITER);
+
+        for (int i = noChangeIndex; i < names.length; i++) {
+            sb.append(CATEGORY_DELIMITER).append(names[i]);
+        }
+
+        return sb.toString();
     }
 }
