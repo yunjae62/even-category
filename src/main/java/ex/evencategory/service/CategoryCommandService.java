@@ -17,6 +17,14 @@ public class CategoryCommandService {
     private final CategoryRepository categoryRepository;
 
     /**
+     * 카테고리 생성
+     */
+    public Category createCategory(String name, String code) {
+        Category category = Category.create(name, code);
+        return categoryRepository.save(category);
+    }
+
+    /**
      * 카테고리 이름 변경 (하위 카테고리까지 모두 변경)
      */
     public List<Category> updateCategoryName(String beforeName, String afterName) {
