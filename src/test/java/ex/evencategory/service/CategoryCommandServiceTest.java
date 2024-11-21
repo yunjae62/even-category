@@ -19,6 +19,18 @@ class CategoryCommandServiceTest {
 
     @Test
     @Transactional
+    void createCategory() {
+        Category shoes = categoryCommandService.createCategory("신발", "102");
+        Category converse = categoryCommandService.createCategory("신발>컨버스", "102>100");
+        Category slippers = categoryCommandService.createCategory("신발>슬리퍼", "102>101");
+
+        System.out.println(shoes);
+        System.out.println(converse);
+        System.out.println(slippers);
+    }
+
+    @Test
+    @Transactional
     void updateCategoryName() {
         List<Category> categories = categoryCommandService.updateCategoryName("상의", "윗옷");
 
