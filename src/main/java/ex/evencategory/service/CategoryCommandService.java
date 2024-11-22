@@ -5,8 +5,10 @@ import ex.evencategory.repository.CategoryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Slf4j(topic = "category-command-service")
 @Service
@@ -21,6 +23,10 @@ public class CategoryCommandService {
      */
     public Category createCategory(String name, String code) {
         Category category = Category.create(name, code);
+        boolean exists = categoryRepository.existsByNameOrCode(name, code);
+        if (exists) {
+            throw new HttpClientErrorException(HttpStatusCode.valueOf(404), "이미 존재하는 카테고리입니다.");
+        }
         return categoryRepository.save(category);
     }
 
