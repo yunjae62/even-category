@@ -5,6 +5,7 @@ import ex.evencategory.repository.CategoryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ public class CategoryCommandService {
     /**
      * 카테고리 이름 변경 (하위 카테고리까지 모두 변경)
      */
+    @CacheEvict(cacheNames = {"category::allsub", "category::onlysub"}, allEntries = true)
     public List<Category> updateCategoryName(String beforeName, String afterName) {
         List<Category> categoryList = categoryRepository.findAllSubByNameLike(beforeName);
         categoryList.forEach(category -> category.updateName(beforeName, afterName));
@@ -43,6 +45,7 @@ public class CategoryCommandService {
     /**
      * 카테고리 코드 변경 (하위 카테고리까지 모두 변경)
      */
+    @CacheEvict(cacheNames = {"category::allsub", "category::onlysub"}, allEntries = true)
     public List<Category> moveCategoryCode(String beforeCode, String afterCode) {
         List<Category> categoryList = categoryRepository.findAllSubByCodeLike(beforeCode);
         categoryList.forEach(category -> category.updateCode(beforeCode, afterCode));
@@ -53,6 +56,7 @@ public class CategoryCommandService {
     /**
      * 카테고리 코드로 코드와 이름 변경 (하위 카테고리까지 모두 변경)
      */
+    @CacheEvict(cacheNames = {"category::allsub", "category::onlysub"}, allEntries = true)
     public List<Category> updateCategoryByCode(String beforeCode, String afterCode, String afterName) {
         List<Category> categoryList = categoryRepository.findAllSubByCodeLike(beforeCode);
         categoryList.forEach(category -> category.updateByCode(beforeCode, afterCode, afterName));
