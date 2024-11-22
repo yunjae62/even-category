@@ -21,4 +21,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("SELECT c FROM Category c WHERE c.name LIKE CONCAT(:name, '>%')")
     List<Category> findOnlySubByNameLike(String name);
+
+    boolean existsByNameOrCode(String name, String code);
 }
