@@ -5,6 +5,7 @@ import ex.evencategory.repository.CategoryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,7 @@ public class CategoryQueryService {
     /**
      * 코드로 루트 + 하위 카테고리 조회
      */
+    @Cacheable(value = "category::allsub", key = "#code")
     public List<Category> getAllSubCategoryListByCode(String code) {
         return categoryRepository.findAllSubByCodeLike(code);
     }
@@ -44,6 +46,7 @@ public class CategoryQueryService {
     /**
      * 코드로 하위 카테고리만 조회
      */
+    @Cacheable(value = "category::onlysub", key = "#code")
     public List<Category> getOnlySubCategoryListByCode(String code) {
         return categoryRepository.findOnlySubByCodeLike(code);
     }
