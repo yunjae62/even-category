@@ -1,6 +1,7 @@
 package ex.evencategory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ex.evencategory.TestDBConfig;
 import ex.evencategory.domain.Category;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 @SpringBootTest
 class CategoryCommandServiceTest extends TestDBConfig {
@@ -41,6 +43,18 @@ class CategoryCommandServiceTest extends TestDBConfig {
 
         assertThat(slippers.getName()).isEqualTo("신발>슬리퍼");
         assertThat(slippers.getCode()).isEqualTo("111>101");
+    }
+
+    @Test
+    @Transactional
+    void createCategory_exists() {
+        // when
+        categoryCommandService.createCategory("신발", "111");
+
+        // then
+        assertThrows(HttpClientErrorException.class, () -> categoryCommandService.createCategory("신발", "111"));
+        assertThrows(HttpClientErrorException.class, () -> categoryCommandService.createCategory("신발", "112"));
+        assertThrows(HttpClientErrorException.class, () -> categoryCommandService.createCategory("발바닥", "111"));
     }
 
     @Test
