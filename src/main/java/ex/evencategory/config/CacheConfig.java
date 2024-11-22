@@ -3,6 +3,7 @@ package ex.evencategory.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import ex.evencategory.domain.Category;
+import ex.evencategory.domain.RecCategory;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,8 @@ public class CacheConfig {
 
         return Map.of(
             "category::allsub", categoryListCacheConfig(),
-            "category::onlysub", categoryListCacheConfig()
+            "category::onlysub", categoryListCacheConfig(),
+            "rec-category", recCategoryCacheConfig()
         );
     }
 
@@ -51,6 +53,15 @@ public class CacheConfig {
 
         return defaultCacheConfig()
             .entryTtl(Duration.ofHours(1L))
+            .serializeValuesWith(SerializationPair.fromSerializer(serializer))
+            .disableCachingNullValues();
+    }
+
+    private RedisCacheConfiguration recCategoryCacheConfig() {
+        Jackson2JsonRedisSerializer<RecCategory> serializer = new Jackson2JsonRedisSerializer<>(RecCategory.class);
+
+        return defaultCacheConfig()
+            .entryTtl(Duration.ofDays(7L))
             .serializeValuesWith(SerializationPair.fromSerializer(serializer))
             .disableCachingNullValues();
     }
