@@ -77,10 +77,6 @@ class CategoryCommandServiceTest extends TestDBConfig {
     @Test
     @Transactional
     void moveCategoryCode() {
-        // given
-        Category tempCategory = Category.create("바지", "110");
-        categoryRepository.save(tempCategory);
-
         // when
         List<Category> categories = categoryCommandService.moveCategoryCode("101", "110");
 
