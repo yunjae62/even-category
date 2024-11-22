@@ -16,7 +16,7 @@ public class RecCategoryReader {
 
     private final RecCategoryRepository recCategoryRepository;
 
-    @Cacheable(cacheNames = "rec-category", key = "#id")
+    @Cacheable(cacheNames = "rec-category", key = "#id", cacheManager = "caffeineCacheManager")
     public RecCategory getCategoryById(Long id) {
         return recCategoryRepository.findById(id)
             .orElseThrow(() -> new HttpClientErrorException(HttpStatusCode.valueOf(404), "존재하지 않는 카테고리입니다."));
