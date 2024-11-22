@@ -2,14 +2,19 @@ package ex.evencategory.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import ex.evencategory.domain.Category;
 import ex.evencategory.domain.RecCategory;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.caffeine.CaffeineCache;
+import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -22,6 +27,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 public class CacheConfig {
 
     @Bean
+    @Primary
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
 
         return RedisCacheManager.builder(redisConnectionFactory)
@@ -64,5 +70,21 @@ public class CacheConfig {
             .entryTtl(Duration.ofDays(7L))
             .serializeValuesWith(SerializationPair.fromSerializer(serializer))
             .disableCachingNullValues();
+    }
+
+    @Bean
+    public CacheManager caffeineCacheManager() {
+        SimpleCacheManager cacheManager = new SimpleCacheManager();
+        cacheManager.setCaches(List.of(caffeineCacheOfRecCategory()));
+
+        return cacheManager;
+    }
+
+    private CaffeineCache caffeineCacheOfRecCategory() {
+        return new CaffeineCache("rec-category", Caffeine.newBuilder()
+            .expireAfterWrite(Duration.ofDays(7L))
+            .maximumSize(10_000L)
+            .recordStats()
+            .build());
     }
 }
