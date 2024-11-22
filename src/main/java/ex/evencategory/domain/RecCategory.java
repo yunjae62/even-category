@@ -30,16 +30,12 @@ public class RecCategory {
     private String name;
 
     @Column(nullable = false)
-    private String code;
-
-    @Column(nullable = false)
     private Long parentId;
 
-    public static RecCategory create(String name, String code, Long parentId) {
+    public static RecCategory create(String name, Long parentId) {
         RecCategory category = new RecCategory();
 
         category.name = name;
-        category.code = code;
         category.parentId = parentId;
 
         return category;
